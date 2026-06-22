@@ -1,385 +1,739 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
-const navItems = ['Membros', 'Produtos', 'Serviços'];
+const HomePage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [skipVisible, setSkipVisible] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-const categories = [
-  { name: 'Beleza & Bem-estar', icon: '✦' },
-  { name: 'Mobilidade & Conforto', icon: '✦' },
-  { name: 'Casa & Segurança', icon: '✦' },
-  { name: 'Tecnologia Assistiva', icon: '✦' },
-  { name: 'Nutrição & Saúde', icon: '✦' },
-  { name: 'Experiências & Lazer', icon: '✦' },
-];
-
-const testimonials = [
-  {
-    quote: 'O Aureva mudou a forma como encontro produtos feitos para a minha rotina. Tudo é elegante, simples e confiável.',
-    author: 'Dona Rosa, 72',
-    location: 'São Paulo, SP',
-  },
-  {
-    quote: 'Finalmente um lugar que entende que a melhor idade também merece design bonito e atendimento respeitoso.',
-    author: 'Seu Jorge, 68',
-    location: 'Belo Horizonte, MG',
-  },
-  {
-    quote: 'A navegação é tão fácil que consigo comprar sozinha sem precisar pedir ajuda para ninguém.',
-    author: 'Dona Lúcia, 75',
-    location: 'Curitiba, PR',
-  },
-];
-
-export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: '', email: '', message: '' });
-  };
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        setSkipVisible(true);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setMenuOpen(false);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setIsOpen(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
   };
 
   return (
     <>
       <Head>
-        <title>Aureva — Marketplace Premium para a Melhor Idade</title>
-        <meta name="description" content="Aureva é um marketplace premium de produtos e serviços para a melhor idade." />
+        <title>Aureva | Marketplace Premium de Lifestyle para a Melhor Idade</title>
+        <meta
+          name="description"
+          content="O Aureva é o marketplace premium de lifestyle para pessoas 65+. Curadoria consciente, experiência premium e elegância atemporal para viver com excelência."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
-      <a href="#conteudo" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-forest focus:text-cream px-6 py-3 rounded-lg text-xl font-semibold">
-        Pular para o conteúdo principal
+      <a
+        href="#conteudo"
+        onClick={(e) => {
+          e.preventDefault();
+          scrollTo('conteudo');
+        }}
+        className={`fixed left-4 top-4 z-50 rounded-md bg-[#1F3A2E] px-4 py-2 text-sm font-medium text-[#E7E2D6] transition-transform focus:outline-none focus:ring-2 focus:ring-[#E7E2D6] focus:ring-offset-2 focus:ring-offset-[#1F3A2E] ${
+          skipVisible ? 'translate-y-0' : '-translate-y-20'
+        }`}
+        onBlur={() => setSkipVisible(false)}
+      >
+        Pular para o conteúdo
       </a>
 
-      <header className="sticky top-0 z-40 bg-sage/95 border-b border-forest/20 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex items-center justify-between">
-          <a href="/" className="text-3xl font-serif font-semibold text-forest tracking-wide" aria-label="Aureva — Página inicial">
+      <header
+        className="sticky top-0 z-40 border-b border-[#C9C1B3]/30 bg-[#E7E2D6]/90 backdrop-blur-md"
+        role="banner"
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          <a
+            href="#hero"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollTo('hero');
+            }}
+            className="font-serif text-2xl font-semibold tracking-tight text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+            aria-label="Aureva - Página inicial"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
             Aureva
           </a>
 
-          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollTo(item.toLowerCase())}
-                className="text-xl font-medium text-forest hover:text-gold focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2 focus:ring-offset-cream rounded px-2 py-1 transition-colors"
-              >
-                {item}
-              </button>
-            ))}
-            <button
-              onClick={() => scrollTo('contato')}
-              className="text-xl font-semibold bg-forest text-cream px-7 py-3 rounded-full hover:bg-forest-dark focus:outline-none focus:ring-4 focus:ring-gold focus:ring-offset-2 focus:ring-offset-cream transition-colors"
+          <nav className="hidden items-center gap-8 md:flex" aria-label="Navegação principal">
+            <a
+              href="#membros"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo('membros');
+              }}
+              className="text-base font-medium text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
             >
-              Entre na lista
-            </button>
+              Membros
+            </a>
+            <a
+              href="#produtos"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo('produtos');
+              }}
+              className="text-base font-medium text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+            >
+              Produtos
+            </a>
+            <a
+              href="#servicos"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo('servicos');
+              }}
+              className="text-base font-medium text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+            >
+              Serviços
+            </a>
           </nav>
 
-          <button
-            className="md:hidden text-forest p-2 focus:outline-none focus:ring-2 focus:ring-forest rounded"
-            aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(!menuOpen)}
+          <a
+            href="#contato"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollTo('contato');
+            }}
+            className="hidden rounded-full bg-[#1F3A2E] px-5 py-2.5 text-sm font-medium text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6] md:inline-block"
           >
-            <span className="block w-8 h-1 bg-forest mb-1.5 rounded"></span>
-            <span className="block w-8 h-1 bg-forest mb-1.5 rounded"></span>
-            <span className="block w-8 h-1 bg-forest rounded"></span>
+            Fale Conosco
+          </a>
+
+          <button
+            type="button"
+            className="rounded-md p-2 text-[#1F3A2E] transition hover:bg-[#ABB69A]/20 focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6] md:hidden"
+            aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
           </button>
         </div>
 
-        {menuOpen && (
-          <div className="md:hidden bg-cream border-t border-forest/20 px-6 pb-6">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollTo(item.toLowerCase())}
-                className="block w-full text-left text-2xl font-medium text-forest py-4 border-b border-forest/10 focus:outline-none focus:ring-2 focus:ring-forest rounded px-2"
+        {isOpen && (
+          <nav
+            id="mobile-menu"
+            className="border-t border-[#C9C1B3]/30 bg-[#E7E2D6] px-4 py-4 md:hidden"
+            aria-label="Menu mobile"
+          >
+            <div className="flex flex-col gap-3">
+              <a
+                href="#membros"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo('membros');
+                }}
+                className="rounded-md px-3 py-2 text-base font-medium text-[#333333] transition hover:bg-[#ABB69A]/20 hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
               >
-                {item}
-              </button>
-            ))}
-            <button
-              onClick={() => scrollTo('contato')}
-              className="mt-6 w-full text-2xl font-semibold bg-forest text-cream px-6 py-4 rounded-full focus:outline-none focus:ring-4 focus:ring-gold"
-            >
-              Entre na lista
-            </button>
-          </div>
+                Membros
+              </a>
+              <a
+                href="#produtos"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo('produtos');
+                }}
+                className="rounded-md px-3 py-2 text-base font-medium text-[#333333] transition hover:bg-[#ABB69A]/20 hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+              >
+                Produtos
+              </a>
+              <a
+                href="#servicos"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo('servicos');
+                }}
+                className="rounded-md px-3 py-2 text-base font-medium text-[#333333] transition hover:bg-[#ABB69A]/20 hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+              >
+                Serviços
+              </a>
+              <a
+                href="#contato"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo('contato');
+                }}
+                className="mt-2 rounded-full bg-[#1F3A2E] px-5 py-2.5 text-center text-sm font-medium text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2"
+              >
+                Fale Conosco
+              </a>
+            </div>
+          </nav>
         )}
       </header>
 
       <main id="conteudo">
-        <section className="relative bg-cream overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-sage/40 blur-3xl"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-gold/10 blur-3xl"></div>
-          </div>
-          <div className="relative max-w-7xl mx-auto px-6 lg:px-10 py-24 md:py-36 text-center">
-            <span className="inline-block text-xl md:text-2xl font-medium tracking-widest text-forest/80 uppercase mb-8">
-              Bem-vindo à Aureva
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-semibold text-forest leading-tight mb-10">
-              Cuidado, elegância e propósito<br className="hidden md:block" /> para a melhor idade
-            </h1>
-            <p className="text-2xl md:text-3xl text-forest/90 max-w-4xl mx-auto leading-relaxed mb-14">
-              Um marketplace premium onde produtos, serviços e experiências são escolhidos com atenção real às necessidades de quem vive com mais sabedoria.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button
-                onClick={() => scrollTo('contato')}
-                className="text-2xl font-semibold bg-forest text-cream px-10 py-5 rounded-full hover:bg-forest-dark focus:outline-none focus:ring-4 focus:ring-gold focus:ring-offset-4 focus:ring-offset-cream transition-colors min-w-[16rem]"
+        <section
+          id="hero"
+          className="relative overflow-hidden bg-[#1F3A2E] py-20 sm:py-28 lg:py-36"
+          aria-label="Hero"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1F3A2E] via-[#1F3A2E] to-[#2a4d3d] opacity-90"></div>
+          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#ABB69A]/10 blur-3xl sm:h-96 sm:w-96"></div>
+          <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#E7E2D6]/10 blur-3xl sm:h-96 sm:w-96"></div>
+          <div className="absolute right-1/4 top-1/4 h-16 w-16 rounded-full border border-[#ABB69A]/30 sm:h-24 sm:w-24"></div>
+          <div className="absolute bottom-1/3 left-1/4 h-12 w-12 rounded-full border border-[#E7E2D6]/20 sm:h-20 sm:w-20"></div>
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <h1
+                className="text-4xl font-medium leading-tight text-[#E7E2D6] sm:text-5xl md:text-6xl lg:text-7xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                Cadastre-se grátis
-              </button>
-              <button
-                onClick={() => scrollTo('produtos')}
-                className="text-2xl font-semibold text-forest border-2 border-forest px-10 py-5 rounded-full hover:bg-forest/5 focus:outline-none focus:ring-4 focus:ring-forest focus:ring-offset-4 focus:ring-offset-cream transition-colors min-w-[16rem]"
-              >
-                Explorar ofertas
-              </button>
+                O encontro entre patrimônio e sofisticação contemporânea.
+              </h1>
+              <p className="mt-6 text-lg leading-relaxed text-[#E7E2D6]/90 sm:text-xl md:text-2xl">
+                Um novo conceito de viver, comprar e investir com excelência.
+              </p>
+              <div className="mt-10">
+                <a
+                  href="#conceito"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo('conceito');
+                  }}
+                  className="inline-flex items-center rounded-full bg-[#E7E2D6] px-8 py-3.5 text-base font-semibold text-[#1F3A2E] transition hover:bg-[#C9C1B3] focus:outline-none focus:ring-2 focus:ring-[#E7E2D6] focus:ring-offset-2 focus:ring-offset-[#1F3A2E]"
+                >
+                  Descubra Mais
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="produtos" className="bg-sage/30 py-24 md:py-32">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-6xl font-serif font-semibold text-forest mb-8">
-                Categorias pensadas para você
+        <section id="conceito" className="bg-[#E7E2D6] py-16 sm:py-24" aria-labelledby="conceito-title">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center sm:mb-16">
+              <span className="text-sm font-semibold uppercase tracking-widest text-[#ABB69A]">
+                Nossa Essência
+              </span>
+              <h2
+                id="conceito-title"
+                className="mt-3 text-3xl font-medium text-[#1F3A2E] sm:text-4xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Três pilares que movem o Aureva
               </h2>
-              <p className="text-2xl md:text-3xl text-forest/90 max-w-4xl mx-auto leading-relaxed">
-                Cada categoria é curada com foco em acessibilidade, qualidade e dignidade.
+            </div>
+
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="rounded-2xl bg-[#C9C1B3]/20 p-8 transition hover:shadow-lg focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#1F3A2E] text-3xl text-[#E7E2D6]" aria-hidden="true">
+                  ✦
+                </div>
+                <h3 className="mb-3 text-2xl font-medium text-[#1F3A2E]">Vitalidade</h3>
+                <p className="text-lg leading-relaxed text-[#333333]">
+                  Cada curadoria celebra a energia de quem vive intensamente. Produtos e serviços que impulsionam o corpo, a mente e os relacionamentos.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#C9C1B3]/20 p-8 transition hover:shadow-lg focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#1F3A2E] text-3xl text-[#E7E2D6]" aria-hidden="true">
+                  ◉
+                </div>
+                <h3 className="mb-3 text-2xl font-medium text-[#1F3A2E]">Autonomia</h3>
+                <p className="text-lg leading-relaxed text-[#333333]">
+                  Tecnologia, design e atendimento pensados para oferecer liberdade real. Você no comando das suas escolhas, do seu tempo e do seu estilo.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#C9C1B3]/20 p-8 transition hover:shadow-lg focus-within:ring-2 focus-within:ring-[#1F3A2E] sm:col-span-2 lg:col-span-1">
+                <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#1F3A2E] text-3xl text-[#E7E2D6]" aria-hidden="true">
+                  ✧
+                </div>
+                <h3 className="mb-3 text-2xl font-medium text-[#1F3A2E]">Elegância</h3>
+                <p className="text-lg leading-relaxed text-[#333333]">
+                  Estética atemporal em cada detalhe. Uma experiência que honra a trajetória e eleva o cotidiano com refinamento.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="membros" className="bg-[#ABB69A]/20 py-16 sm:py-24" aria-labelledby="marca-title">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center sm:mb-16">
+              <span className="text-sm font-semibold uppercase tracking-widest text-[#1F3A2E]">
+                Curadoria Aureva
+              </span>
+              <h2
+                id="marca-title"
+                className="mt-3 text-3xl font-medium text-[#1F3A2E] sm:text-4xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Uma marca que faz bem viver
+              </h2>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-2xl bg-[#E7E2D6] p-6 text-center shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-4 text-4xl text-[#1F3A2E]" aria-hidden="true">
+                  🌿
+                </div>
+                <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Curadoria Consciente</h3>
+                <p className="text-base leading-relaxed text-[#333333]">
+                  Cada item é selecionado por critérios rigorosos de qualidade, impacto positivo e relevância para a melhor idade.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#E7E2D6] p-6 text-center shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-4 text-4xl text-[#1F3A2E]" aria-hidden="true">
+                  ✦
+                </div>
+                <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Experiência Premium</h3>
+                <p className="text-base leading-relaxed text-[#333333]">
+                  Atendimento humanizado, navegação intuitiva e entrega impecável. Você merece uma jornada sem atritos.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#E7E2D6] p-6 text-center shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-4 text-4xl text-[#1F3A2E]" aria-hidden="true">
+                  ◈
+                </div>
+                <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Estilo de Vida</h3>
+                <p className="text-base leading-relaxed text-[#333333]">
+                  Mais do que produtos, conectamos você a uma comunidade e a uma forma de viver com propósito e prazer.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-[#E7E2D6] p-6 text-center shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-[#1F3A2E]">
+                <div className="mb-4 text-4xl text-[#1F3A2E]" aria-hidden="true">
+                  ♥
+                </div>
+                <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Escolhas que Fazem Bem</h3>
+                <p className="text-base leading-relaxed text-[#333333]">
+                  Bem-estar, sustentabilidade e longevidade ativa são prioridades em cada decisão da nossa curadoria.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="produtos" className="bg-[#E7E2D6] py-16 sm:py-24" aria-labelledby="produtos-title">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center sm:mb-16">
+              <span className="text-sm font-semibold uppercase tracking-widest text-[#ABB69A]">
+                Categorias
+              </span>
+              <h2
+                id="produtos-title"
+                className="mt-3 text-3xl font-medium text-[#1F3A2E] sm:text-4xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Explore o universo Aureva
+              </h2>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <article className="group overflow-hidden rounded-2xl bg-[#C9C1B3]/30 shadow-sm transition hover:shadow-lg">
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1506784365847-bbad939e4f9c?auto=format&fit=crop&w=800&q=80"
+                    alt="Natureza serena com luz suave"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-[#1F3A2E]/20"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Bem-Estar</h3>
+                  <p className="text-base leading-relaxed text-[#333333]">
+                    Produtos que cuidam do corpo e da mente, trazendo equilíbrio e qualidade de vida ao dia a dia.
+                  </p>
+                </div>
+              </article>
+
+              <article className="group overflow-hidden rounded-2xl bg-[#C9C1B3]/30 shadow-sm transition hover:shadow-lg">
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80"
+                    alt="Interiores elegantes e confortáveis"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-[#1F3A2E]/20"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Casa & Conforto</h3>
+                  <p className="text-base leading-relaxed text-[#333333]">
+                    Soluções para um lar mais seguro, acolhedor e refinado, em sintonia com a sua rotina.
+                  </p>
+                </div>
+              </article>
+
+              <article className="group overflow-hidden rounded-2xl bg-[#C9C1B3]/30 shadow-sm transition hover:shadow-lg sm:col-span-2 lg:col-span-1">
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80"
+                    alt="Grupo de amigos em lifestyle ativo"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-[#1F3A2E]/20"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-2 text-xl font-medium text-[#1F3A2E]">Experiências</h3>
+                  <p className="text-base leading-relaxed text-[#333333]">
+                    Viagens, cultura, gastronomia e encontros exclusivos para viver momentos memoráveis.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="servicos" className="bg-[#1F3A2E] py-16 sm:py-24" aria-labelledby="servicos-title">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center sm:mb-16">
+              <span className="text-sm font-semibold uppercase tracking-widest text-[#ABB69A]">
+                Depoimentos
+              </span>
+              <h2
+                id="servicos-title"
+                className="mt-3 text-3xl font-medium text-[#E7E2D6] sm:text-4xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Quem vive o Aureva, aprova
+              </h2>
+            </div>
+
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <blockquote className="rounded-2xl border border-[#E7E2D6]/10 bg-[#E7E2D6]/5 p-8">
+                <p className="text-lg leading-relaxed text-[#E7E2D6]">
+                  "Finalmente encontrei um lugar que entende minha fase da vida. Tudo é elegante, prático e feito com respeito."
+                </p>
+                <footer className="mt-6">
+                  <p className="font-medium text-[#E7E2D6]">Helena Moura</p>
+                  <p className="text-sm text-[#ABB69A]">São Paulo, SP</p>
+                </footer>
+              </blockquote>
+
+              <blockquote className="rounded-2xl border border-[#E7E2D6]/10 bg-[#E7E2D6]/5 p-8">
+                <p className="text-lg leading-relaxed text-[#E7E2D6]">
+                  "A curadoria do Aureva é impecável. Sinto que cada produto foi escolhido para fazer a diferença no meu dia."
+                </p>
+                <footer className="mt-6">
+                  <p className="font-medium text-[#E7E2D6]">Roberto Dias</p>
+                  <p className="text-sm text-[#ABB69A]">Rio de Janeiro, RJ</p>
+                </footer>
+              </blockquote>
+
+              <blockquote className="rounded-2xl border border-[#E7E2D6]/10 bg-[#E7E2D6]/5 p-8 sm:col-span-2 lg:col-span-1">
+                <p className="text-lg leading-relaxed text-[#E7E2D6]">
+                  "Atendimento humanizado, entrega rápida e um cuidado que não se encontra em nenhum outro marketplace."
+                </p>
+                <footer className="mt-6">
+                  <p className="font-medium text-[#E7E2D6]">Célia Andrade</p>
+                  <p className="text-sm text-[#ABB69A]">Curitiba, PR</p>
+                </footer>
+              </blockquote>
+            </div>
+          </div>
+        </section>
+
+        <section id="contato" className="bg-[#E7E2D6] py-16 sm:py-24" aria-labelledby="contato-title">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 text-center">
+              <span className="text-sm font-semibold uppercase tracking-widest text-[#ABB69A]">
+                Fale Conosco
+              </span>
+              <h2
+                id="contato-title"
+                className="mt-3 text-3xl font-medium text-[#1F3A2E] sm:text-4xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Estamos aqui para você
+              </h2>
+              <p className="mt-4 text-lg text-[#333333]">
+                Envie uma mensagem e nossa equipe retornará com toda a atenção que você merece.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {categories.map((category) => (
-                <article
-                  key={category.name}
-                  className="group bg-cream border border-forest/10 rounded-3xl p-10 shadow-sm hover:shadow-lg transition-all focus-within:ring-4 focus-within:ring-forest focus-within:ring-offset-4 focus-within:ring-offset-cream"
-                  tabIndex={0}
-                >
-                  <span className="text-5xl text-gold mb-8 block" aria-hidden="true">{category.icon}</span>
-                  <h3 className="text-3xl font-semibold text-forest mb-5">{category.name}</h3>
-                  <p className="text-xl text-forest/80 leading-relaxed">
-                    Soluções cuidadosamente selecionadas para promover autonomia, conforto e prazer no dia a dia.
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
 
-        <section id="membros" className="bg-cream py-24 md:py-32">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-4xl md:text-6xl font-serif font-semibold text-forest mb-8 leading-tight">
-                  Faça parte de uma comunidade que valoriza cada fase da vida
-                </h2>
-                <p className="text-2xl md:text-3xl text-forest/90 leading-relaxed mb-12">
-                  Membros Aureva têm acesso a ofertas exclusivas, atendimento humanizado e conteúdos feitos para inspirar, informar e conectar.
-                </p>
-                <ul className="space-y-6">
-                  {['Descontos em produtos premium', 'Suporte por telefone e WhatsApp', 'Convites para eventos e experiências', 'Curadoria atualizada por especialistas'].map((benefit) => (
-                    <li key={benefit} className="flex items-start gap-5 text-2xl text-forest">
-                      <span className="text-gold text-3xl leading-none" aria-hidden="true">✦</span>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
+            <form
+              onSubmit={handleSubmit}
+              className="rounded-2xl bg-[#C9C1B3]/20 p-6 shadow-sm sm:p-10"
+              aria-label="Formulário de contato"
+            >
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="flex flex-col">
+                  <label htmlFor="nome" className="mb-2 text-base font-medium text-[#1F3A2E]">
+                    Nome
+                  </label>
+                  <input
+                    id="nome"
+                    name="nome"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    className="rounded-lg border border-[#C9C1B3] bg-[#E7E2D6] px-4 py-3 text-lg text-[#333333] placeholder-[#C9C1B3] transition focus:border-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                    placeholder="Seu nome completo"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <label htmlFor="email" className="mb-2 text-base font-medium text-[#1F3A2E]">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    className="rounded-lg border border-[#C9C1B3] bg-[#E7E2D6] px-4 py-3 text-lg text-[#333333] placeholder-[#C9C1B3] transition focus:border-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                    placeholder="seu@email.com"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:col-span-2">
+                  <label htmlFor="telefone" className="mb-2 text-base font-medium text-[#1F3A2E]">
+                    Telefone
+                  </label>
+                  <input
+                    id="telefone"
+                    name="telefone"
+                    type="tel"
+                    autoComplete="tel"
+                    className="rounded-lg border border-[#C9C1B3] bg-[#E7E2D6] px-4 py-3 text-lg text-[#333333] placeholder-[#C9C1B3] transition focus:border-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                    placeholder="(00) 00000-0000"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:col-span-2">
+                  <label htmlFor="mensagem" className="mb-2 text-base font-medium text-[#1F3A2E]">
+                    Mensagem
+                  </label>
+                  <textarea
+                    id="mensagem"
+                    name="mensagem"
+                    rows={5}
+                    required
+                    className="rounded-lg border border-[#C9C1B3] bg-[#E7E2D6] px-4 py-3 text-lg text-[#333333] placeholder-[#C9C1B3] transition focus:border-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                    placeholder="Como podemos ajudar?"
+                  ></textarea>
+                </div>
               </div>
-              <div className="bg-sage/30 rounded-[3rem] p-12 md:p-16 flex flex-col items-center text-center">
-                <span className="text-7xl mb-8">✦</span>
-                <h3 className="text-3xl md:text-4xl font-semibold text-forest mb-6">Associação gratuita</h3>
-                <p className="text-2xl text-forest/90 mb-10 leading-relaxed">
-                  Cadastre-se em poucos minutos e comece a descobrir produtos e serviços feitos para o seu ritmo.
-                </p>
+
+              <div className="mt-8">
                 <button
-                  onClick={() => scrollTo('contato')}
-                  className="text-2xl font-semibold bg-forest text-cream px-10 py-5 rounded-full hover:bg-forest-dark focus:outline-none focus:ring-4 focus:ring-gold focus:ring-offset-4 focus:ring-offset-cream transition-colors"
+                  type="submit"
+                  className="w-full rounded-full bg-[#1F3A2E] px-8 py-3.5 text-base font-semibold text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
                 >
-                  Tornar-se membro
+                  Enviar Mensagem
                 </button>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <section id="serviços" className="bg-forest text-cream py-24 md:py-32">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-6xl font-serif font-semibold mb-8">
-                Serviços que cuidam de quem você ama
-              </h2>
-              <p className="text-2xl md:text-3xl text-cream/90 max-w-4xl mx-auto leading-relaxed">
-                Desde acompanhamento domiciliar até assessoria de bem-estar, conectamos famílias a profissionais de confiança.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {['Acompanhamento Domiciliar', 'Nutrição e Cuidados', 'Assessoria de Bem-estar'].map((service) => (
-                <div key={service} className="bg-cream/10 border border-cream/20 rounded-3xl p-10 text-center focus-within:ring-4 focus-within:ring-gold rounded-3xl">
-                  <span className="text-6xl text-gold mb-8 block" aria-hidden="true">✦</span>
-                  <h3 className="text-3xl font-semibold text-cream mb-5">{service}</h3>
-                  <p className="text-xl text-cream/85 leading-relaxed">
-                    Profissionais verificados, com atenção individualizada e comunicação clara.
-                  </p>
+              {showSuccess && (
+                <div
+                  className="mt-6 rounded-lg bg-[#ABB69A] px-4 py-3 text-center text-base font-medium text-[#1F3A2E]"
+                  role="status"
+                  aria-live="polite"
+                >
+                  Obrigado! Recebemos sua mensagem e entraremos em contato em breve.
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-cream py-24 md:py-32">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <h2 className="text-4xl md:text-6xl font-serif font-semibold text-forest text-center mb-20">
-              O que dizem nossos membros
-            </h2>
-            <div className="grid md:grid-cols-3 gap-10">
-              {testimonials.map((t) => (
-                <blockquote key={t.author} className="bg-sage/20 border border-forest/10 rounded-3xl p-10 flex flex-col justify-between h-full">
-                  <p className="text-2xl md:text-3xl text-forest/95 leading-relaxed mb-10">“{t.quote}”</p>
-                  <footer>
-                    <p className="text-2xl font-semibold text-forest">{t.author}</p>
-                    <p className="text-xl text-forest/75">{t.location}</p>
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="contato" className="bg-sage/30 py-24 md:py-32">
-          <div className="max-w-4xl mx-auto px-6 lg:px-10">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-serif font-semibold text-forest mb-8">Entre em contato</h2>
-              <p className="text-2xl md:text-3xl text-forest/90 leading-relaxed">
-                Tem dúvidas? Quer ser avisado do lançamento? Envie uma mensagem e responderemos com carinho.
-              </p>
-            </div>
-
-            <div className="bg-cream rounded-3xl p-8 md:p-14 shadow-sm border border-forest/10">
-              {submitted ? (
-                <div className="text-center py-12">
-                  <span className="text-6xl text-gold mb-6 block" aria-hidden="true">✦</span>
-                  <h3 className="text-3xl font-semibold text-forest mb-4">Mensagem enviada!</h3>
-                  <p className="text-2xl text-forest/90">Agradecemos o contato. Nossa equipe retornará em breve.</p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="mt-10 text-2xl font-semibold text-forest underline underline-offset-4 focus:outline-none focus:ring-2 focus:ring-forest rounded px-2 py-1"
-                  >
-                    Enviar outra mensagem
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-10">
-                  <div>
-                    <label htmlFor="name" className="block text-2xl font-semibold text-forest mb-3">Nome completo</label>
-                    <input
-                      id="name"
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full text-2xl text-forest bg-cream border-2 border-forest/30 rounded-xl px-6 py-4 focus:outline-none focus:border-forest focus:ring-4 focus:ring-gold/40 placeholder:text-forest/50"
-                      placeholder="Digite seu nome"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-2xl font-semibold text-forest mb-3">E-mail</label>
-                    <input
-                      id="email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full text-2xl text-forest bg-cream border-2 border-forest/30 rounded-xl px-6 py-4 focus:outline-none focus:border-forest focus:ring-4 focus:ring-gold/40 placeholder:text-forest/50"
-                      placeholder="seu@email.com"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-2xl font-semibold text-forest mb-3">Mensagem</label>
-                    <textarea
-                      id="message"
-                      required
-                      rows={5}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full text-2xl text-forest bg-cream border-2 border-forest/30 rounded-xl px-6 py-4 focus:outline-none focus:border-forest focus:ring-4 focus:ring-gold/40 placeholder:text-forest/50"
-                      placeholder="Como podemos ajudar?"
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full text-2xl font-semibold bg-forest text-cream px-8 py-5 rounded-full hover:bg-forest-dark focus:outline-none focus:ring-4 focus:ring-gold focus:ring-offset-4 focus:ring-offset-cream transition-colors"
-                  >
-                    Enviar mensagem
-                  </button>
-                </form>
               )}
-            </div>
+            </form>
           </div>
         </section>
       </main>
 
-      <footer className="bg-forest text-cream py-20 md:py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid md:grid-cols-3 gap-16 mb-16">
+      <footer className="border-t border-[#C9C1B3]/30 bg-[#E7E2D6] py-14 sm:py-20" role="contentinfo">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="text-4xl font-serif font-semibold mb-8">Aureva</p>
-              <p className="text-xl text-cream/85 leading-relaxed">
-                aureva.app.br<br />
-                Marketplace premium para a melhor idade.
+              <a
+                href="#hero"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo('hero');
+                }}
+                className="inline-block font-serif text-3xl font-semibold text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+                aria-label="Aureva - Voltar ao topo"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Aureva
+              </a>
+              <p className="mt-4 text-base leading-relaxed text-[#333333]">
+                Marketplace premium de lifestyle para a melhor idade. Curadoria consciente, experiência refinada e elegância atemporal.
               </p>
             </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-6">Navegação</h3>
-              <ul className="space-y-4">
-                {navItems.map((item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => scrollTo(item.toLowerCase())}
-                      className="text-xl text-cream/85 hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold rounded px-1 transition-colors"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                ))}
+
+            <nav aria-label="Navegação do rodapé">
+              <h3 className="mb-4 text-lg font-semibold text-[#1F3A2E]">Navegação</h3>
+              <ul className="space-y-3">
                 <li>
-                  <button
-                    onClick={() => scrollTo('contato')}
-                    className="text-xl text-cream/85 hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold rounded px-1 transition-colors"
+                  <a
+                    href="#membros"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo('membros');
+                    }}
+                    className="text-base text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                  >
+                    Membros
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#produtos"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo('produtos');
+                    }}
+                    className="text-base text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                  >
+                    Produtos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#servicos"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo('servicos');
+                    }}
+                    className="text-base text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+                  >
+                    Serviços
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#contato"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollTo('contato');
+                    }}
+                    className="text-base text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
                   >
                     Contato
-                  </button>
+                  </a>
                 </li>
               </ul>
-            </div>
+            </nav>
+
             <div>
-              <h3 className="text-2xl font-semibold mb-6">Contato</h3>
-              <p className="text-xl text-cream/85 leading-relaxed">
-                contato@aureva.app.br<br />
-                (11) 0000-0000<br />
-                Atendimento de segunda a sexta, 9h às 18h.
-              </p>
+              <h3 className="mb-4 text-lg font-semibold text-[#1F3A2E]">Atendimento</h3>
+              <address className="not-italic">
+                <p className="text-base text-[#333333]">contato@aureva.app.br</p>
+                <p className="mt-2 text-base text-[#333333]">0800 000 0000</p>
+                <p className="mt-2 text-base text-[#333333]">
+                  Segunda a Sexta, 9h às 18h
+                </p>
+              </address>
+            </div>
+
+            <div>
+              <h3 className="mb-4 text-lg font-semibold text-[#1F3A2E]">Redes</h3>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram do Aureva"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#1F3A2E] text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn do Aureva"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#1F3A2E] text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                </a>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube do Aureva"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#1F3A2E] text-[#E7E2D6] transition hover:bg-[#142921] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E] focus:ring-offset-2 focus:ring-offset-[#E7E2D6]"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
-          <div className="border-t border-cream/20 pt-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-xl text-cream/80">© {new Date().getFullYear()} Aureva. Todos os direitos reservados.</p>
-            <div className="flex gap-8">
-              <a href="#" className="text-xl text-cream/80 hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold rounded px-1 transition-colors">Privacidade</a>
-              <a href="#" className="text-xl text-cream/80 hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold rounded px-1 transition-colors">Termos</a>
-              <a href="#" className="text-xl text-cream/80 hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold rounded px-1 transition-colors">Acessibilidade</a>
+
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#C9C1B3]/30 pt-8 sm:flex-row">
+            <p className="text-sm text-[#333333]">
+              © {new Date().getFullYear()} Aureva. Todos os direitos reservados.
+            </p>
+            <div className="flex flex-wrap justify-center gap-6">
+              <a
+                href="#"
+                className="text-sm text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+              >
+                Política de Privacidade
+              </a>
+              <a
+                href="#"
+                className="text-sm text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+              >
+                Termos de Uso
+              </a>
+              <a
+                href="#"
+                className="text-sm text-[#333333] transition hover:text-[#1F3A2E] focus:outline-none focus:ring-2 focus:ring-[#1F3A2E]"
+              >
+                Acessibilidade
+              </a>
             </div>
           </div>
         </div>
       </footer>
     </>
   );
-}
+};
+
+export default HomePage;
