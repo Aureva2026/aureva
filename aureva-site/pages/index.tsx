@@ -29,7 +29,7 @@ export default function Home() {
   const [slideIdx, setSlideIdx] = useState(0);
 
   useEffect(() => {
-    const check = () => setMobile(window.innerWidth < 900);
+    const check = () => setMobile(window.innerWidth &lt; 900);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
@@ -62,7 +62,7 @@ export default function Home() {
   } as const;
 
   return (
-    <>
+    &lt;>
       <Head>
         <title>Aureva — Marketplace de Lifestyle para a Melhor Idade</title>
         <meta name="description" content="Aureva: a melhor idade, vivida com elegância." />
