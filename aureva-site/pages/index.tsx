@@ -176,8 +176,8 @@ export default function Home() {
                 <button key={item} onClick={() => scrollTo(item.toLowerCase())} style={{
                   fontFamily: "'Poppins', sans-serif", fontSize: 14, fontWeight: 500, color: forest, letterSpacing: '0.08em',
                   background: 'none', border: 'none', cursor: 'pointer', padding: '8px 4px', transition: 'color 0.2s',
-                }} onMouseOver={(e) => e.target.style.color = sage}
-                   onMouseOut={(e) => e.target.style.color = forest} >
+                }} onMouseOver={(e) => e.currentTarget.style.color = sage}
+                   onMouseOut={(e) => e.currentTarget.style.color = forest} >
                   {item}
                 </button>
               ))}
