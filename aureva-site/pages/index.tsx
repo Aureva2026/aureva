@@ -29,11 +29,17 @@ export default function Home() {
   const [slideIdx, setSlideIdx] = useState(0);
 
   useEffect(() => {
-    const check = () => setMobile(window.innerWidth &lt; 900);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  const check = () => {
+    if (window.innerWidth <= 899) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+  };
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
