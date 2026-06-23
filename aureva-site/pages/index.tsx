@@ -187,8 +187,8 @@ export default function Home() {
               <button onClick={() => scrollTo('contato')} style={{
                 fontFamily: "'Poppins', sans-serif", fontSize: 13, fontWeight: 600, color: cream,
                 background: forest, border: 'none', borderRadius: 50, padding: '10px 24px', cursor: 'pointer', letterSpacing: '0.05em',
-              }} onMouseOver={(e) => { e.target.style.background = '#152D20'; }}
-                 onMouseOut={(e) => { e.target.style.background = forest; }} >
+              }} onMouseOver={(e) => { e.currentTarget.style.background = '#152D20'; }}
+                 onMouseOut={(e) => { e.currentTarget.style.background = forest; }} >
                 FALE CONOSCO
               </button>
             </nav>
