@@ -193,37 +193,72 @@ export default function HomePage() {
           </div>
         </header>
 
-        {/* Hero */}
-        <section style={{ ...sectionBase, backgroundColor: colors.cream, paddingTop: isMobile ? 48 : 80 }}>
-          <div style={{ ...container, flexDirection: isMobile ? 'column' as const : 'row' as const, alignItems: 'center', gap: isMobile ? '40px' : '64px' }}>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 28, textAlign: isMobile ? 'center' : 'left' }}>
-              <h1 style={{ margin: 0, fontFamily: fonts.title, fontSize: isMobile ? 40 : 52, lineHeight: 1.15, color: colors.darkGreen }}>
-                A melhor idade, vivida com elegância
-              </h1>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.text }}>
-                Descubra produtos, serviços e experiências pensados para quem vive cada dia com mais vitalidade, propósito e conexão.
-              </p>
-              <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, gap: 16, justifyContent: isMobile ? 'center' : 'flex-start' }}>
-                <button style={buttonPrimary}>Explore o Marketplace</button>
-                <button style={buttonSecondary}>Torne-se Membro</button>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 24, marginTop: 16, justifyContent: isMobile ? 'center' : 'flex-start' }}>
-                {pillar('Vitalidade', 'Bem-estar físico e energia para o dia a dia.')}
-                {pillar('Elegância', 'Estilo atemporal que valoriza sua história.')}
-                {pillar('Propósito', 'Experiências que dão sentido a cada momento.')}
-                {pillar('Conexão', 'Uma comunidade que vive a melhor idade junta.')}
-              </div>
-            </div>
-            <div style={{ flex: 1, width: '100%' }}>
-              <img
-                src="https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?auto=format&fit=crop&w=800&q=80"
-                alt="Senhora elegante sorrindo"
-                style={{ width: '100%', maxWidth: 600, height: isMobile ? 360 : 560, objectFit: 'cover' as const, borderRadius: 16, display: 'block', margin: '0 auto' }}
-              />
-            </div>
-          </div>
-        </section>
+       {/* Hero Section */}
+<section style={{
+  padding: '40px 24px',
+  maxWidth: '1200px',
+  margin: '0 auto',
+}}>
+  <div style={{
+    position: 'relative',
+    borderRadius: '24px',
+    overflow: 'hidden',
+    minHeight: '560px',
+    backgroundImage: "url('/hero-banner.jpg')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 30%',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '60px',
+  }}>
+    {/* Overlay escuro para legibilidade do texto */}
+    <div style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgba(31,58,46,0.7) 0%, rgba(31,58,46,0.1) 100%)',
+    }} />
 
+    {/* Conteúdo do Hero */}
+    <div style={{ position: 'relative', zIndex: 1, maxWidth: '550px' }}>
+      <h1 style={{
+        fontSize: '60px',
+        fontWeight: 700,
+        color: '#fff',
+        lineHeight: 1.1,
+        margin: '0 0 16px',
+        fontFamily: "'Playfair Display', serif",
+      }}>
+        A melhor idade,<br />vivida com elegância
+      </h1>
+      <p style={{
+        fontSize: '22px',
+        color: 'rgba(255,255,255,0.9)',
+        margin: '0 0 32px',
+        lineHeight: 1.5,
+      }}>
+        Descubra um universo de produtos e serviços premium<br />
+        pensados para quem sabe o valor do tempo.
+      </p>
+      <a href="#"
+        style={{
+          display: 'inline-block',
+          padding: '16px 40px',
+          fontSize: '18px',
+          fontWeight: 600,
+          color: '#1F3A2E',
+          background: '#D4AF37',
+          borderRadius: '50px',
+          textDecoration: 'none',
+          transition: 'all 0.3s',
+        }}
+        onMouseOver={(e) => e.target.style.background = '#C5A032'}
+        onMouseOut={(e) => e.target.style.background = '#D4AF37'}
+      >
+        Descubra Mais
+      </a>
+    </div>
+  </div>
+</section>
         {/* Curadoria */}
         <section style={{ ...sectionBase, backgroundColor: colors.white }}>
           <div style={container}>
