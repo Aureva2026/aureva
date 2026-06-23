@@ -1,399 +1,542 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
-export default function HomePage() {
-  const [width, setWidth] = useState<number>(1024);
+const forest = '#1F3A2E';
+const sage = '#ABB69A';
+const cream = '#E7E2D6';
+const greige = '#C9C1B3';
+const dark = '#333333';
+const gold = '#D4AF37';
+
+const LogoAureva = () => (
+  <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="28" r="16" fill={forest} />
+    <path d="M34 50 C34 50, 28 72, 50 90 C72 72, 66 50, 66 50 C66 50, 58 62, 50 62 C42 62, 34 50, 34 50Z" fill={forest} opacity="0.85" />
+    <path d="M42 78 C42 78, 38 92, 50 96 C62 92, 58 78, 58 78" stroke={forest} strokeWidth="3" fill="none" />
+  </svg>
+);
+
+const IconSearch = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
+
+const IconUser = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const IconHeart = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+  </svg>
+);
+
+const IconLeaf = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z" />
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+  </svg>
+);
+
+const IconShield = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </svg>
+);
+
+const IconBox = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+    <line x1="12" y1="22.08" x2="12" y2="12" />
+  </svg>
+);
+
+const IconHeartFill = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill={forest} stroke={forest} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+  </svg>
+);
+
+const IconPeople = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+);
+
+const IconBag = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={forest} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+);
+
+const IconStar = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill={gold} stroke={gold} strokeWidth="1">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWidth(window.innerWidth);
-      const handleResize = () => setWidth(window.innerWidth);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
+    const check = () => setMobile(window.innerWidth < 900);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
-  const isMobile = width < 768;
-
-  const colors = {
-    darkGreen: '#1F3A2E',
-    sage: '#ABB69A',
-    cream: '#E7E2D6',
-    warmGray: '#C9C1B3',
-    text: '#333333',
-    white: '#FFFFFF',
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setMenuOpen(false);
   };
 
-  const fonts = {
-    title: '"Playfair Display", serif',
-    body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  };
+  const pilarData = [
+    { icon: <IconLeaf />, title: 'CURADORIA CONSCIENTE', desc: 'Produtos selecionados com propósito e qualidade.' },
+    { icon: <IconShield />, title: 'EXPERIÊNCIA PREMIUM', desc: 'Jornada de compra segura, humana e acolhedora.' },
+    { icon: <IconBox />, title: 'ESTILO DE VIDA', desc: 'Muito mais que produtos, um jeito de viver bem.' },
+    { icon: <IconHeartFill />, title: 'ESCOLHAS QUE FAZEM BEM', desc: 'Para você, para os outros e para o planeta.' },
+  ];
 
-  const sectionBase = {
-    width: '100%',
-    padding: isMobile ? '48px 20px' : '80px 40px',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-  };
-
-  const container = {
-    width: '100%',
-    maxWidth: 1200,
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '48px',
-  };
-
-  const buttonPrimary = {
-    backgroundColor: colors.darkGreen,
-    color: colors.white,
-    padding: '18px 32px',
-    borderRadius: 8,
-    border: 'none',
-    fontFamily: fonts.body,
-    fontSize: 18,
-    fontWeight: 600,
-    cursor: 'pointer',
-    lineHeight: 1.4,
-  };
-
-  const buttonSecondary = {
-    backgroundColor: 'transparent',
-    color: colors.darkGreen,
-    padding: '18px 32px',
-    borderRadius: 8,
-    border: `2px solid ${colors.darkGreen}`,
-    fontFamily: fonts.body,
-    fontSize: 18,
-    fontWeight: 600,
-    cursor: 'pointer',
-    lineHeight: 1.4,
-  };
-
-  const inputStyle = {
-    width: '100%',
-    padding: '18px 20px',
-    fontSize: 18,
-    fontFamily: fonts.body,
-    color: colors.text,
-    backgroundColor: colors.white,
-    border: `2px solid ${colors.warmGray}`,
-    borderRadius: 8,
-    outline: 'none',
-  };
-
-  const logoBlock = (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: isMobile ? 'center' : 'flex-start', gap: 4 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <svg width="36" height="36" viewBox="0 0 64 64" fill="none" style={{ display: 'block' }}>
-          <path d="M32 8C26.5 8 22 12.5 22 18C22 23.5 26.5 28 32 28C37.5 28 42 23.5 42 18C42 12.5 37.5 8 32 8Z" stroke={colors.darkGreen} strokeWidth="3" />
-          <path d="M12 36C20 28 28 34 32 34C36 34 44 28 52 36" stroke={colors.darkGreen} strokeWidth="3" strokeLinecap="round" />
-          <path d="M32 28V52" stroke={colors.darkGreen} strokeWidth="3" strokeLinecap="round" />
-          <path d="M24 44C28 40 36 40 40 44" stroke={colors.darkGreen} strokeWidth="3" strokeLinecap="round" />
-        </svg>
-        <span style={{ fontFamily: fonts.title, fontSize: 28, fontWeight: 700, color: colors.darkGreen, letterSpacing: '-0.5px' }}>
-          Aureva
-        </span>
-      </div>
-      <span style={{ fontFamily: fonts.body, fontSize: 10, fontWeight: 600, letterSpacing: '1.5px', color: colors.darkGreen, textTransform: 'uppercase' as const }}>
-        Marketplace de Lifestyle
-      </span>
-    </div>
-  );
-
-  const navLink = (label: string) => (
-    <a href="#" style={{ fontFamily: fonts.body, fontSize: 18, fontWeight: 500, color: colors.darkGreen, textDecoration: 'none' }}>
-      {label}
-    </a>
-  );
-
-  const iconSearch = (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={colors.darkGreen} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8"></circle>
-      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-  );
-
-  const iconUser = (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={colors.darkGreen} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-      <circle cx="12" cy="7" r="4"></circle>
-    </svg>
-  );
-
-  const iconHeart = (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={colors.darkGreen} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  );
-
-  const pillar = (title: string, desc: string) => (
-    <div style={{ flex: 1, minWidth: isMobile ? '100%' : 220, display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <h3 style={{ margin: 0, fontFamily: fonts.title, fontSize: 24, color: colors.darkGreen }}>{title}</h3>
-      <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 18, lineHeight: 1.6, color: colors.text }}>{desc}</p>
-    </div>
-  );
-
-  const curadoriaCard = (title: string, desc: string) => (
-    <div style={{ flex: 1, minWidth: isMobile ? '100%' : 240, backgroundColor: colors.white, padding: 32, borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <h3 style={{ margin: 0, fontFamily: fonts.title, fontSize: 26, color: colors.darkGreen }}>{title}</h3>
-      <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 18, lineHeight: 1.6, color: colors.text }}>{desc}</p>
-    </div>
-  );
-
-  const categoriaCard = (image: string, title: string) => (
-    <div style={{ flex: 1, minWidth: isMobile ? '100%' : 300, height: 360, borderRadius: 16, overflow: 'hidden', position: 'relative' as const }}>
-      <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' as const }} />
-      <div style={{ position: 'absolute' as const, inset: '0', background: 'linear-gradient(to top, rgba(31,58,46,0.85), rgba(31,58,46,0.1))', display: 'flex', alignItems: 'flex-end', padding: 28 }}>
-        <h3 style={{ margin: 0, fontFamily: fonts.title, fontSize: 32, color: colors.white }}>{title}</h3>
-      </div>
-    </div>
-  );
-
-  const depoimento = (quote: string, author: string, role: string) => (
-    <div style={{ flex: 1, minWidth: isMobile ? '100%' : 300, backgroundColor: 'rgba(255,255,255,0.08)', padding: 32, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.white }}>"{quote}"</p>
-      <div>
-        <p style={{ margin: 0, fontFamily: fonts.title, fontSize: 22, color: colors.sage }}>{author}</p>
-        <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 16, color: colors.warmGray }}>{role}</p>
-      </div>
-    </div>
-  );
+  const catData = [
+    {
+      icon: <IconPeople />,
+      title: 'Membros',
+      desc: 'Conecte-se com uma comunidade exclusiva de pessoas que compartilham o amor pela vida.',
+      id: 'membros'
+    },
+    {
+      icon: <IconBag />,
+      title: 'Produtos',
+      desc: 'Seleção premium de produtos para seu bem-estar, conforto e estilo de vida.',
+      id: 'produtos'
+    },
+    {
+      icon: <IconHeartFill />,
+      title: 'Serviços',
+      desc: 'Serviços especializados pensados para cada fase da sua jornada.',
+      id: 'servicos'
+    },
+  ];
 
   return (
     <>
       <Head>
         <title>Aureva — Marketplace de Lifestyle para a Melhor Idade</title>
-        <meta name="description" content="Aureva é o marketplace premium para a melhor idade: produtos, serviços e experiências com elegância." />
+        <meta name="description" content="Aureva é um marketplace premium de lifestyle para a melhor idade." />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 
-      <main style={{ width: '100%', minHeight: '100vh', backgroundColor: colors.cream, fontFamily: fonts.body, color: colors.text, overflowX: 'hidden' as const }}>
-        {/* Header */}
-        <header style={{ position: 'sticky' as const, top: 0, zIndex: 1000, width: '100%', backgroundColor: 'rgba(231,226,214,0.95)', backdropFilter: 'blur(8px)', borderBottom: `1px solid ${colors.warmGray}` }}>
-          <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '16px 20px' : '20px 40px', display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, alignItems: 'center', gap: isMobile ? '16px' : 0, justifyContent: 'space-between' }}>
-            {logoBlock}
-            <nav style={{ display: 'flex', flexWrap: 'wrap' as const, alignItems: 'center', justifyContent: 'center', gap: 24 }}>
-              {navLink('Membros')}
-              {navLink('Produtos')}
-              {navLink('Serviços')}
-            </nav>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-              <div style={{ display: 'flex', gap: 16 }}>
-                <button aria-label="Buscar" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>{iconSearch}</button>
-                <button aria-label="Conta" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>{iconUser}</button>
-                <button aria-label="Favoritos" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>{iconHeart}</button>
-              </div>
-              <button style={buttonPrimary}>Fale Conosco</button>
-            </div>
-          </div>
-        </header>
-
-       {/* Hero Section */}
-<section style={{
-  padding: '40px 24px',
-  maxWidth: '1200px',
-  margin: '0 auto',
-}}>
-  <div style={{
-    position: 'relative',
-    borderRadius: '24px',
-    overflow: 'hidden',
-    minHeight: '560px',
-    backgroundImage: "url('/hero-banner.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center 30%',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '60px',
-  }}>
-    {/* Overlay escuro para legibilidade do texto */}
-    <div style={{
-      position: 'absolute',
-      inset: 0,
-      background: 'linear-gradient(to right, rgba(31,58,46,0.7) 0%, rgba(31,58,46,0.1) 100%)',
-    }} />
-
-    {/* Conteúdo do Hero */}
-    <div style={{ position: 'relative', zIndex: 1, maxWidth: '550px' }}>
-      <h1 style={{
-        fontSize: '60px',
-        fontWeight: 700,
-        color: '#fff',
-        lineHeight: 1.1,
-        margin: '0 0 16px',
-        fontFamily: "'Playfair Display', serif",
-      }}>
-        A melhor idade,<br />vivida com elegância
-      </h1>
-      <p style={{
-        fontSize: '22px',
-        color: 'rgba(255,255,255,0.9)',
-        margin: '0 0 32px',
-        lineHeight: 1.5,
-      }}>
-        Descubra um universo de produtos e serviços premium<br />
-        pensados para quem sabe o valor do tempo.
-      </p>
-      <a href="#"
-        style={{
-          display: 'inline-block',
-          padding: '16px 40px',
-          fontSize: '18px',
-          fontWeight: 600,
-          color: '#1F3A2E',
-          background: '#D4AF37',
-          borderRadius: '50px',
-          textDecoration: 'none',
-          transition: 'all 0.3s',
-        }}
-        onMouseOver={(e) => e.target.style.background = '#C5A032'}
-        onMouseOut={(e) => e.target.style.background = '#D4AF37'}
-      >
-        Descubra Mais
+      {/* SKIP LINK */}
+      <a href="#conteudo" style={{
+        position: 'absolute', left: '-9999px', top: 0,
+        background: forest, color: cream, padding: '12px 24px', zIndex: 100, fontWeight: 600,
+      }} onFocus={(e) => { e.target.style.left = '16px'; e.target.style.top = '16px'; e.target.style.position = 'fixed'; }}
+         onBlur={(e) => { e.target.style.left = '-9999px'; }} >
+        Pular para o conteúdo
       </a>
-    </div>
-  </div>
-</section>
-        {/* Curadoria */}
-        <section style={{ ...sectionBase, backgroundColor: colors.white }}>
-          <div style={container}>
-            <div style={{ textAlign: 'center' as const, maxWidth: 720 }}>
-              <h2 style={{ margin: 0, fontFamily: fonts.title, fontSize: isMobile ? 34 : 42, color: colors.darkGreen }}>Curadoria Aureva</h2>
-              <p style={{ margin: '16px 0 0', fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.text }}>
-                Cada item é escolhido a dedo por especialistas que entendem o estilo de vida, o conforto e a sofisticação da melhor idade.
-              </p>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 24, justifyContent: 'center' }}>
-              {curadoriaCard('Selecionados à mão', 'Produtos testados por nossa equipe para garantir qualidade e usabilidade.')}
-              {curadoriaCard('Foco em acessibilidade', 'Designs pensados para mobilidade, segurança e praticidade cotidiana.')}
-              {curadoriaCard('Marcas de confiança', 'Parceiros cuidadosamente auditados para entregar o que há de melhor.')}
-              {curadoriaCard('Experiências exclusivas', 'Desde viagens a serviços de bem-estar, tudo para enriquecer sua rotina.')}
-            </div>
-          </div>
-        </section>
 
-        {/* Categorias */}
-        <section style={{ ...sectionBase, backgroundColor: colors.cream }}>
-          <div style={container}>
-            <div style={{ textAlign: 'center' as const, maxWidth: 720 }}>
-              <h2 style={{ margin: 0, fontFamily: fonts.title, fontSize: isMobile ? 34 : 42, color: colors.darkGreen }}>Explore por Categoria</h2>
-              <p style={{ margin: '16px 0 0', fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.text }}>
-                Navegue entre as áreas que tornam a vida ainda mais plena e elegante.
-              </p>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 24, justifyContent: 'center' }}>
-              {categoriaCard('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80', 'Moda & Acessórios')}
-              {categoriaCard('https://images.unsplash.com/photo-1544367563-12123d8965cd?auto=format&fit=crop&w=600&q=80', 'Bem-estar & Saúde')}
-              {categoriaCard('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80', 'Casa & Conforto')}
-            </div>
-          </div>
-        </section>
+      {/* HEADER */}
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 50,
+        background: 'rgba(231,226,214,0.95)', backdropFilter: 'blur(12px)',
+        borderBottom: `1px solid ${forest}20`,
+        padding: mobile ? '8px 16px' : '12px 40px',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
 
-        {/* Depoimentos */}
-        <section style={{ ...sectionBase, backgroundColor: colors.darkGreen }}>
-          <div style={container}>
-            <div style={{ textAlign: 'center' as const, maxWidth: 720 }}>
-              <h2 style={{ margin: 0, fontFamily: fonts.title, fontSize: isMobile ? 34 : 42, color: colors.white }}>Histórias que Inspiram</h2>
-              <p style={{ margin: '16px 0 0', fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.cream }}>
-                Veja como a Aureva está transformando a rotina de quem sabe aproveitar cada etapa da vida.
-              </p>
+          {/* Logo */}
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ display: 'flex', alignItems: 'center', gap: 12, border: 'none', background: 'none', cursor: 'pointer' }}>
+            <LogoAureva />
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: forest, lineHeight: 1.1, display: 'block' }}>Aureva</span>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 10, fontWeight: 500, color: forest, letterSpacing: '0.15em', textTransform: 'uppercase', display: 'block' }}>Marketplace de Lifestyle</span>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 24, justifyContent: 'center' }}>
-              {depoimento('Encontrei produtos de qualidade que realmente respeitam meu estilo. É refrescante.', 'Marta Ribeiro', 'Membro desde 2023')}
-              {depoimento('A curadoria me surpreendeu. Tudo é pensado com carinho e bom gosto.', 'Carlos Mendes', 'Membro desde 2022')}
-              {depoimento('Aureva me conectou a uma comunidade vibrante e cheia de propósito.', 'Helena Souza', 'Membro desde 2024')}
-            </div>
-          </div>
-        </section>
+          </button>
 
-        {/* Contato */}
-        <section style={{ ...sectionBase, backgroundColor: colors.white }}>
-          <div style={{ ...container, flexDirection: isMobile ? 'column' as const : 'row' as const, alignItems: 'flex-start', gap: isMobile ? '48px' : '64px' }}>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <h2 style={{ margin: 0, fontFamily: fonts.title, fontSize: isMobile ? 34 : 42, color: colors.darkGreen }}>Fale com a Aureva</h2>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 20, lineHeight: 1.6, color: colors.text }}>
-                Queremos ouvir você. Envie uma mensagem e nossa equipe retornará em breve.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>
-                  <strong>Andre Cunha</strong>
-                </p>
-                <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>contato@aureva.app.br</p>
-                <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>(11) 99999-8888</p>
+          {/* Desktop Nav */}
+          {!mobile && (
+            <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+              {['MEMBROS', 'PRODUTOS', 'SERVIÇOS'].map(item => (
+                <button key={item} onClick={() => scrollTo(item.toLowerCase())} style={{
+                  fontFamily: "'Poppins', sans-serif", fontSize: 14, fontWeight: 500, color: forest, letterSpacing: '0.08em',
+                  background: 'none', border: 'none', cursor: 'pointer', padding: '8px 4px', transition: 'color 0.2s',
+                }} onMouseOver={(e) => e.target.style.color = sage}
+                   onMouseOut={(e) => e.target.style.color = forest} >
+                  {item}
+                </button>
+              ))}
+              <button aria-label="Buscar" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}><IconSearch /></button>
+              <button aria-label="Entrar" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}><IconUser /></button>
+              <button aria-label="Favoritos" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}><IconHeart /></button>
+              <button onClick={() => scrollTo('contato')} style={{
+                fontFamily: "'Poppins', sans-serif", fontSize: 13, fontWeight: 600, color: cream,
+                background: forest, border: 'none', borderRadius: 50, padding: '10px 24px', cursor: 'pointer', letterSpacing: '0.05em',
+              }} onMouseOver={(e) => { e.target.style.background = '#152D20'; }}
+                 onMouseOut={(e) => { e.target.style.background = forest; }} >
+                FALE CONOSCO
+              </button>
+            </nav>
+          )}
+
+          {/* Mobile menu button */}
+          {mobile && (
+            <button onClick={() => setMenuOpen(!menuOpen)} style={{
+              background: 'none', border: `2px solid ${forest}`, borderRadius: 8, padding: '8px 12px', cursor: 'pointer',
+            }}>
+              <div style={{ width: 24, height: 2, background: forest, margin: '4px 0' }} />
+              <div style={{ width: 24, height: 2, background: forest, margin: '4px 0' }} />
+              <div style={{ width: 24, height: 2, background: forest, margin: '4px 0' }} />
+            </button>
+          )}
+        </div>
+
+        {/* Mobile Nav */}
+        {mobile && menuOpen && (
+          <nav style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {['MEMBROS', 'PRODUTOS', 'SERVIÇOS'].map(item => (
+              <button key={item} onClick={() => scrollTo(item.toLowerCase())} style={{
+                fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 500, color: forest,
+                background: 'none', border: 'none', cursor: 'pointer', padding: '12px 8px', textAlign: 'left', letterSpacing: '0.05em',
+              }}>{item}</button>
+            ))}
+            <button onClick={() => scrollTo('contato')} style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 15, fontWeight: 600, color: cream,
+              background: forest, border: 'none', borderRadius: 50, padding: '12px 24px', cursor: 'pointer',
+            }}>FALE CONOSCO</button>
+          </nav>
+        )}
+      </header>
+
+      <main id="conteudo">
+
+        {/* HERO */}
+        <section style={{
+          maxWidth: 1280, margin: '0 auto', padding: mobile ? '32px 16px' : '60px 40px',
+          display: 'flex', flexDirection: mobile ? 'column' : 'row', gap: 40, alignItems: 'center',
+        }}>
+          <div style={{ flex: 1, order: mobile ? 2 : 1 }}>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif", fontSize: mobile ? 36 : 52, fontWeight: 700,
+              color: forest, lineHeight: 1.15, margin: '0 0 20px',
+            }}>
+              A melhor idade,<br />vivida com elegância
+            </h1>
+            <p style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 18, lineHeight: 1.7, color: dark, margin: '0 0 32px', maxWidth: 520,
+            }}>
+              Um marketplace premium onde produtos, serviços e experiências são escolhidos com atenção real às necessidades de quem vive com mais sabedoria.
+            </p>
+            <button onClick={() => scrollTo('membros')} style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: cream,
+              background: forest, border: 'none', borderRadius: 50, padding: '16px 40px', cursor: 'pointer', letterSpacing: '0.05em',
+              transition: 'all 0.3s',
+            }} onMouseOver={(e) => { e.target.style.background = '#152D20'; e.target.style.transform = 'scale(1.02)'; }}
+               onMouseOut={(e) => { e.target.style.background = forest; e.target.style.transform = 'scale(1)'; }} >
+              DESCUBRA MAIS
+            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 32 }}>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {[1,2,3,4,5].map(i => <IconStar key={i} />)}
               </div>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 500, color: forest }}>4.8 ★</span>
+              <span style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, color: dark }}>+2.000 membros</span>
             </div>
-            <form style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>
-                Nome
-                <input type="text" placeholder="Seu nome completo" style={inputStyle} />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>
-                E-mail
-                <input type="email" placeholder="seu@email.com" style={inputStyle} />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>
-                Telefone
-                <input type="tel" placeholder="(00) 00000-0000" style={inputStyle} />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: fonts.body, fontSize: 18, color: colors.text }}>
-                Mensagem
-                <textarea placeholder="Como podemos ajudar?" rows={5} style={{ ...inputStyle, resize: 'none' as const }} />
-              </label>
-              <button type="submit" style={buttonPrimary}>Enviar Mensagem</button>
+          </div>
+
+          {/* Hero Image */}
+          <div style={{
+            flex: 1, order: mobile ? 1 : 2,
+            width: '100%', minHeight: mobile ? 300 : 500,
+            borderRadius: 24, overflow: 'hidden',
+            background: `linear-gradient(135deg, ${cream}, ${sage})`,
+            backgroundImage: `linear-gradient(135deg, ${cream}, ${sage}), url('/hero-banner.jpg')`,
+            backgroundSize: 'cover', backgroundPosition: 'center',
+            boxShadow: `0 20px 60px ${forest}20`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <div style={{ textAlign: 'center', padding: 40 }}>
+              <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="28" r="16" fill={forest} opacity="0.3" />
+                <path d="M34 50 C34 50, 28 72, 50 90 C72 72, 66 50, 66 50 C66 50, 58 62, 50 62 C42 62, 34 50, 34 50Z" fill={forest} opacity="0.2" />
+              </svg>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, color: forest, marginTop: 12 }}>
+                Adicione sua foto aqui
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* PILARES */}
+        <section style={{
+          background: sage, padding: mobile ? '60px 16px' : '80px 40px',
+        }}>
+          <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif", fontSize: mobile ? 32 : 40,
+              fontWeight: 600, color: forest, textAlign: 'center', margin: '0 0 12px',
+            }}>
+              Nossos Pilares
+            </h2>
+            <p style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 18, color: dark, textAlign: 'center',
+              margin: '0 0 48px', maxWidth: 600, marginLeft: 'auto', marginRight: 'auto',
+            }}>
+              Valores que guiam cada escolha na Aureva.
+            </p>
+            <div style={{
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(4, 1fr)', gap: 24,
+            }}>
+              {pilarData.map((p, i) => (
+                <div key={i} style={{
+                  background: cream, borderRadius: 20, padding: 32, textAlign: 'center',
+                  border: `1px solid ${forest}15`,
+                  transition: 'all 0.3s',
+                }} onMouseOver={(e) => { e.currentTarget.style.boxShadow = `0 8px 30px ${forest}15`; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                   onMouseOut={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }} >
+                  <div style={{ marginBottom: 16 }}>{p.icon}</div>
+                  <h3 style={{
+                    fontFamily: "'Poppins', sans-serif", fontSize: 14, fontWeight: 700,
+                    color: forest, letterSpacing: '0.08em', margin: '0 0 12px',
+                  }}>{p.title}</h3>
+                  <p style={{
+                    fontFamily: "'Poppins', sans-serif", fontSize: 15, color: dark, lineHeight: 1.6, margin: 0,
+                  }}>{p.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CATEGORIAS */}
+        <section id="membros" style={{
+          padding: mobile ? '60px 16px' : '80px 40px',
+          maxWidth: 1280, margin: '0 auto',
+        }}>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif", fontSize: mobile ? 32 : 40,
+            fontWeight: 600, color: forest, textAlign: 'center', margin: '0 0 48px',
+          }}>
+            Explore a Aureva
+          </h2>
+          <div style={{
+            display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)', gap: 24,
+          }}>
+            {catData.map((c, i) => (
+              <div key={i} id={c.id} style={{
+                background: cream, borderRadius: 24, padding: 40, textAlign: 'center',
+                border: `1px solid ${forest}15`,
+                transition: 'all 0.3s',
+              }} onMouseOver={(e) => { e.currentTarget.style.boxShadow = `0 12px 40px ${forest}20`; e.currentTarget.style.transform = 'translateY(-6px)'; }}
+                 onMouseOut={(e) => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }} >
+                <div style={{
+                  width: 72, height: 72, borderRadius: 20, background: `${sage}40`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+                }}>{c.icon}</div>
+                <h3 style={{
+                  fontFamily: "'Playfair Display', serif", fontSize: 24,
+                  fontWeight: 600, color: forest, margin: '0 0 16px',
+                }}>{c.title}</h3>
+                <p style={{
+                  fontFamily: "'Poppins', sans-serif", fontSize: 16, color: dark, lineHeight: 1.7, margin: 0,
+                }}>{c.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* DEPOIMENTOS */}
+        <section style={{
+          background: forest, padding: mobile ? '60px 16px' : '80px 40px',
+        }}>
+          <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif", fontSize: mobile ? 32 : 40,
+              fontWeight: 600, color: cream, textAlign: 'center', margin: '0 0 48px',
+            }}>
+              O que dizem nossos membros
+            </h2>
+            <div style={{
+              display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)', gap: 24,
+            }}>
+              {[
+                { quote: 'A Aureva mudou a forma como encontro produtos para minha rotina. Tudo é elegante, simples e confiável.', author: 'Dona Rosa', age: 72, city: 'São Paulo' },
+                { quote: 'Finalmente um lugar que entende que a melhor idade também merece design bonito e atendimento respeitoso.', author: 'Seu Jorge', age: 68, city: 'Belo Horizonte' },
+                { quote: 'A navegação é tão fácil que consigo comprar sozinha sem precisar de ajuda.', author: 'Dona Lúcia', age: 75, city: 'Curitiba' },
+              ].map((t, i) => (
+                <div key={i} style={{
+                  background: `${cream}10`, borderRadius: 24, padding: 32,
+                  border: `1px solid ${cream}20`,
+                }}>
+                  <p style={{
+                    fontFamily: "'Playfair Display', serif", fontSize: 28, color: gold,
+                    margin: '0 0 16px', lineHeight: 1,
+                  }}>"</p>
+                  <p style={{
+                    fontFamily: "'Poppins', sans-serif", fontSize: 16, color: cream,
+                    lineHeight: 1.7, margin: '0 0 24px', fontStyle: 'italic',
+                  }}>"{t.quote}"</p>
+                  <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 15, fontWeight: 600, color: sage, margin: 0 }}>
+                    {t.author}, {t.age}
+                  </p>
+                  <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 13, color: `${cream}80`, margin: '4px 0 0' }}>
+                    {t.city}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CONTATO */}
+        <section id="contato" style={{
+          padding: mobile ? '60px 16px' : '80px 40px',
+          background: sage,
+        }}>
+          <div style={{ maxWidth: 720, margin: '0 auto' }}>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif", fontSize: mobile ? 32 : 40,
+              fontWeight: 600, color: forest, textAlign: 'center', margin: '0 0 8px',
+            }}>
+              Entre em contato
+            </h2>
+            <p style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 18, color: dark, textAlign: 'center',
+              margin: '0 0 40px',
+            }}>
+              Tem dúvidas? Quer ser avisado do lançamento? Envie uma mensagem.
+            </p>
+            <form onSubmit={(e) => { e.preventDefault(); alert('Mensagem enviada! Em breve retornamos.'); }}
+                  style={{
+                    background: cream, borderRadius: 24, padding: mobile ? 24 : 40,
+                    border: `1px solid ${forest}15`,
+                  }}>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: forest, display: 'block', marginBottom: 8 }}>
+                  Nome completo
+                </label>
+                <input required placeholder="Seu nome" style={{
+                  width: '100%', padding: '14px 18px', fontSize: 16, fontFamily: "'Poppins', sans-serif",
+                  border: `2px solid ${forest}30`, borderRadius: 12, background: cream, color: dark,
+                  outline: 'none', boxSizing: 'border-box',
+                }} onFocus={(e) => { e.target.style.borderColor = forest; }}
+                   onBlur={(e) => { e.target.style.borderColor = `${forest}30`; }} />
+              </div>
+              <div style={{ marginBottom: 20 }}>
+                <label style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: forest, display: 'block', marginBottom: 8 }}>
+                  E-mail
+                </label>
+                <input required type="email" placeholder="seu@email.com" style={{
+                  width: '100%', padding: '14px 18px', fontSize: 16, fontFamily: "'Poppins', sans-serif",
+                  border: `2px solid ${forest}30`, borderRadius: 12, background: cream, color: dark,
+                  outline: 'none', boxSizing: 'border-box',
+                }} onFocus={(e) => { e.target.style.borderColor = forest; }}
+                   onBlur={(e) => { e.target.style.borderColor = `${forest}30`; }} />
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: forest, display: 'block', marginBottom: 8 }}>
+                  Mensagem
+                </label>
+                <textarea required rows={4} placeholder="Como podemos ajudar?" style={{
+                  width: '100%', padding: '14px 18px', fontSize: 16, fontFamily: "'Poppins', sans-serif",
+                  border: `2px solid ${forest}30`, borderRadius: 12, background: cream, color: dark,
+                  outline: 'none', resize: 'vertical', boxSizing: 'border-box',
+                }} onFocus={(e) => { e.target.style.borderColor = forest; }}
+                   onBlur={(e) => { e.target.style.borderColor = `${forest}30`; }} />
+              </div>
+              <button type="submit" style={{
+                width: '100%', padding: '16px', fontSize: 16, fontWeight: 600,
+                fontFamily: "'Poppins', sans-serif", color: cream, background: forest,
+                border: 'none', borderRadius: 50, cursor: 'pointer', letterSpacing: '0.05em',
+                transition: 'all 0.3s',
+              }} onMouseOver={(e) => { e.target.style.background = '#152D20'; }}
+                 onMouseOut={(e) => { e.target.style.background = forest; }} >
+                ENVIAR MENSAGEM
+              </button>
             </form>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer style={{ width: '100%', backgroundColor: colors.darkGreen, padding: isMobile ? '48px 20px' : '64px 40px' }}>
-          <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, gap: isMobile ? '40px' : '24px', justifyContent: 'space-between' }}>
-            <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-                  <path d="M32 8C26.5 8 22 12.5 22 18C22 23.5 26.5 28 32 28C37.5 28 42 23.5 42 18C42 12.5 37.5 8 32 8Z" stroke={colors.white} strokeWidth="3" />
-                  <path d="M12 36C20 28 28 34 32 34C36 34 44 28 52 36" stroke={colors.white} strokeWidth="3" strokeLinecap="round" />
-                  <path d="M32 28V52" stroke={colors.white} strokeWidth="3" strokeLinecap="round" />
-                  <path d="M24 44C28 40 36 40 40 44" stroke={colors.white} strokeWidth="3" strokeLinecap="round" />
-                </svg>
-                <span style={{ fontFamily: fonts.title, fontSize: 26, fontWeight: 700, color: colors.white }}>Aureva</span>
-              </div>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 16, lineHeight: 1.6, color: colors.cream }}>
-                Marketplace premium de lifestyle para a melhor idade.
-              </p>
-            </div>
-            <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <h4 style={{ margin: 0, fontFamily: fonts.title, fontSize: 20, color: colors.white }}>Navegue</h4>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Membros</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Produtos</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Serviços</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Contato</a>
-            </div>
-            <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <h4 style={{ margin: 0, fontFamily: fonts.title, fontSize: 20, color: colors.white }}>Categorias</h4>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Moda & Acessórios</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Bem-estar & Saúde</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Casa & Conforto</a>
-              <a href="#" style={{ fontFamily: fonts.body, fontSize: 16, color: colors.cream, textDecoration: 'none' }}>Experiências</a>
-            </div>
-            <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <h4 style={{ margin: 0, fontFamily: fonts.title, fontSize: 20, color: colors.white }}>Contato</h4>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 16, color: colors.cream }}>Andre Cunha</p>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 16, color: colors.cream }}>contato@aureva.app.br</p>
-              <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 16, color: colors.cream }}>(11) 99999-8888</p>
-            </div>
-          </div>
-          <div style={{ maxWidth: 1200, margin: '48px auto 0', borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 24, textAlign: 'center' as const }}>
-            <p style={{ margin: 0, fontFamily: fonts.body, fontSize: 14, color: colors.cream }}>
-              © {new Date().getFullYear()} Aureva. Todos os direitos reservados.
+            <p style={{
+              fontFamily: "'Poppins', sans-serif", fontSize: 16, color: forest, textAlign: 'center', marginTop: 24, fontWeight: 500,
+            }}>
+              Andre Cunha — contato@aureva.app.br
             </p>
           </div>
-        </footer>
+        </section>
       </main>
+
+      {/* FOOTER */}
+      <footer style={{
+        background: forest, padding: mobile ? '40px 16px' : '60px 40px', color: cream,
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{
+            display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)', gap: 40,
+            marginBottom: 40,
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="28" r="16" fill={cream} opacity="0.5" />
+                  <path d="M34 50 C34 50, 28 72, 50 90 C72 72, 66 50, 66 50 C66 50, 58 62, 50 62 C42 62, 34 50, 34 50Z" fill={cream} opacity="0.4" />
+                </svg>
+                <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 600 }}>Aureva</span>
+              </div>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, color: `${cream}80`, lineHeight: 1.7, margin: 0 }}>
+                Marketplace de lifestyle premium para a melhor idade.
+              </p>
+            </div>
+            <div>
+              <h4 style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 16, color: sage }}>NAVEGAÇÃO</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {['MEMBROS', 'PRODUTOS', 'SERVIÇOS', 'CONTATO'].map(item => (
+                  <button key={item} onClick={() => scrollTo(item === 'CONTATO' ? 'contato' : item.toLowerCase())} style={{
+                    fontFamily: "'Poppins', sans-serif", fontSize: 14, color: `${cream}80`,
+                    background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0,
+                  }} onMouseOver={(e) => { e.target.style.color = cream; }}
+                     onMouseOut={(e) => { e.target.style.color = `${cream}80`; }} >
+                    {item.charAt(0) + item.slice(1).toLowerCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 16, color: sage }}>CONTATO</h4>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 14, color: `${cream}80`, lineHeight: 1.8, margin: 0 }}>
+                Andre Cunha<br />
+                contato@aureva.app.br<br />
+                (11) 99999-8888
+              </p>
+            </div>
+          </div>
+          <div style={{
+            borderTop: `1px solid ${cream}20`, paddingTop: 24,
+            display: 'flex', flexDirection: mobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: 'center', gap: 16,
+          }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: 13, color: `${cream}60`, margin: 0 }}>
+              © 2026 Aureva. Todos os direitos reservados.
+            </p>
+            <div style={{ display: 'flex', gap: 24 }}>
+              <a href="#" style={{ fontFamily: "'Poppins', sans-serif", fontSize: 13, color: `${cream}60`, textDecoration: 'none' }} onMouseOver={(e) => { e.target.style.color = cream; }} onMouseOut={(e) => { e.target.style.color = `${cream}60`; }}>Privacidade</a>
+              <a href="#" style={{ fontFamily: "'Poppins', sans-serif", fontSize: 13, color: `${cream}60`, textDecoration: 'none' }} onMouseOver={(e) => { e.target.style.color = cream; }} onMouseOut={(e) => { e.target.style.color = `${cream}60`; }}>Termos</a>
+              <a href="#" style={{ fontFamily: "'Poppins', sans-serif", fontSize: 13, color: `${cream}60`, textDecoration: 'none' }} onMouseOver={(e) => { e.target.style.color = cream; }} onMouseOut={(e) => { e.target.style.color = `${cream}60`; }}>Acessibilidade</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
