@@ -68,7 +68,7 @@ export default function Home() {
   } as const;
 
   return (
-    &lt;>
+    <;>
       <Head>
         <title>Aureva — Marketplace de Lifestyle para a Melhor Idade</title>
         <meta name="description" content="Aureva: a melhor idade, vivida com elegância." />
