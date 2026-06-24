@@ -29,17 +29,17 @@ export default function Home() {
   const [slideIdx, setSlideIdx] = useState(0);
 
   useEffect(() => {
-  const check = () => {
-    if (window.innerWidth <= 899) {
-      setMobile(true);
-    } else {
-      setMobile(false);
-    }
-  };
-  check();
-  window.addEventListener('resize', check);
-  return () => window.removeEventListener('resize', check);
-}, []);
+    const check = () => {
+      if (window.innerWidth <= 899) {
+        setMobile(true);
+      } else {
+        setMobile(false);
+      }
+    };
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const scrollTo = (id: string) => {
     setMenuOpen(false);
@@ -65,10 +65,10 @@ export default function Home() {
     cursor: 'pointer',
     letterSpacing: '0.04em',
     transition: 'all 0.3s',
-  } as const;
+  };
 
   return (
-    <;>
+    <>
       <Head>
         <title>Aureva — Marketplace de Lifestyle para a Melhor Idade</title>
         <meta name="description" content="Aureva: a melhor idade, vivida com elegância." />
@@ -290,7 +290,7 @@ export default function Home() {
                 onMouseOut={(e) => { e.currentTarget.style.background = forest; }}
               >ENVIAR MENSAGEM</button>
             </form>
-            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: '17px', color: forest, textAlign: 'center', marginTop: 32, fontWeight: 500 }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif', fontSize: '17px', color: forest, textAlign: 'center', marginTop: 32, fontWeight: 500 }}>
               Andre Cunha — contato@aureva.app.br
             </p>
           </div>
