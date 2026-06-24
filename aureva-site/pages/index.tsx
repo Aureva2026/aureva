@@ -290,7 +290,7 @@ export default function Home() {
                 onMouseOut={(e) => { e.currentTarget.style.background = forest; }}
               >ENVIAR MENSAGEM</button>
             </form>
-            <p style={{ fontFamily: "'Poppins', sans-serif', fontSize: '17px', color: forest, textAlign: 'center', marginTop: 32, fontWeight: 500 }}>
+            <p style={{ fontFamily: "'Poppins', sans-serif", fontSize: '17px', color: forest, textAlign: 'center', marginTop: 32, fontWeight: 500 }}>
               Andre Cunha — contato@aureva.app.br
             </p>
           </div>
